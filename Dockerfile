@@ -2,14 +2,14 @@
 
 ARG SZU_LOGIN_URL=https://github.com/Sleepstars/SZU-login/releases/latest/download/srun-login-linux-amd64
 
-FROM node:20-alpine AS web
+FROM node:23-alpine AS web
 WORKDIR /web
 COPY web/package.json web/package-lock.json* web/pnpm-lock.yaml* ./
 RUN npm ci || npm i
 COPY web/ .
 RUN npm run build
 
-FROM golang:1.21-alpine AS build
+FROM golang:1.23-alpine AS build
 WORKDIR /src
 RUN apk add --no-cache ca-certificates curl
 COPY go.mod go.sum ./
