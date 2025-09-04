@@ -62,6 +62,42 @@ npm run dev
 - 浏览器打开 `http://localhost:5173`
 - Vite 已代理到后端：`/api` 与 `/ws` -> `http://localhost:8080`
 
+## 使用 Makefile 一键操作
+
+常用命令（在 `SZU-NetManager` 根目录执行）：
+
+```bash
+# 安装依赖（Go + Web）
+make init
+
+# 构建后端到 bin/netmanager
+make build-backend
+
+# 运行后端（可在命令行覆盖环境变量）
+make run-backend NM_SSH_HOST=192.168.1.1 NM_SSH_USER=root NM_SSH_KEY=~/.ssh/id_rsa
+
+# 构建前端到 web/dist
+make build-frontend
+
+# 前端开发（Vite）
+make dev-frontend
+
+# 先构建前端，再构建后端
+make build-all
+
+# 构建 Docker 镜像（可覆盖 SZU_LOGIN_URL）
+make docker-build SZU_LOGIN_URL=https://github.com/Sleepstars/SZU-login/releases/latest/download/srun-login-linux-amd64
+
+# 以 host 网络模式运行镜像并传入 NM_* 配置
+make docker-run NM_SSH_HOST=192.168.1.1 NM_SSH_USER=root NM_SSH_KEY=~/.ssh/id_rsa
+
+# 打印当前生效的 NM_* 变量
+make print-env
+
+# 清理构建产物
+make clean
+```
+
 ---
 
 ## 开发/联调流程建议
@@ -158,4 +194,3 @@ docker run --rm --network host \
 - `web`：前端（Vite + React + AntD）
 
 如需进一步完善文档或添加示例配置，告诉我你的具体环境（路由器型号、接口名/NIC、OpenWRT 版本）。
-
