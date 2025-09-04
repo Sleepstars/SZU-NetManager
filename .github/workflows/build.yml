@@ -5,6 +5,10 @@ on:
     branches: [ master ]
   pull_request:
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -47,4 +51,3 @@ jobs:
           tags: ghcr.io/${{ steps.repo.outputs.repo_lc }}:latest
           build-args: |
             SZU_LOGIN_URL=https://github.com/Sleepstars/SZU-login/releases/latest/download/srun-login-linux-amd64
-
