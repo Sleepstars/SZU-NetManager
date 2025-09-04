@@ -1,6 +1,8 @@
 # syntax=docker/dockerfile:1
 
-ARG SZU_LOGIN_URL=https://github.com/Sleepstars/SZU-login/releases/latest/download/srun-login-linux-amd64
+# Build args for multi-arch download
+ARG TARGETARCH
+ARG SZU_LOGIN_VERSION=v0.1.1-alpha
 
 FROM node:23-alpine AS web
 WORKDIR /web
@@ -16,7 +18,18 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 RUN --mount=type=cache,target=/root/.cache/go-build go build -o /out/netmanager ./cmd/netmanager
-RUN curl -fL "$SZU_LOGIN_URL" -o /out/srun-login && chmod +x /out/srun-login || (echo "Failed to download SZU-login" && exit 1)
+ARG TARGETARCH
+ARG SZU_LOGIN_VERSION
+RUN set -eux; \
+    mkdir -p /out; \
+    case "$TARGETARCH" in \
+      amd64) BIN="szu-login-linux-amd64" ;; \
+      arm64) BIN="szu-login-linux-arm64" ;; \
+      *) echo "Unsupported arch: $TARGETARCH" >&2; exit 1 ;; \
+    esac; \
+    URL="https://github.com/Sleepstars/SZU-login/releases/download/${SZU_LOGIN_VERSION}/${BIN}"; \
+    curl -fL "$URL" -o /out/srun-login; \
+    chmod +x /out/srun-login
 
 FROM alpine:3.20 AS runtime
 RUN apk add --no-cache ca-certificates tzdata
@@ -28,4 +41,3 @@ ENV NM_WEB_DIR=/app/web
 ENV NM_SZU_LOGIN=/usr/local/bin/srun-login
 EXPOSE 8080
 ENTRYPOINT ["/usr/local/bin/netmanager"]
-
