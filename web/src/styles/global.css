@@ -1,0 +1,226 @@
+/* 全局样式和主题变量 */
+:root {
+  /* 紫色主题 - 亮色模式 */
+  --primary-color: #722ed1;
+  --primary-hover: #9254de;
+  --primary-active: #531dab;
+  --bg-color: #ffffff;
+  --bg-secondary: #f8f6ff;
+  --bg-tertiary: #f0f0ff;
+  --text-color: #000000d9;
+  --text-secondary: #00000073;
+  --border-color: #d9d9d9;
+  --shadow: 0 2px 8px rgba(114, 46, 209, 0.15);
+  --gradient-bg: linear-gradient(135deg, #f8f6ff 0%, #f0f0ff 100%);
+
+  /* 响应式断点 */
+  --breakpoint-xs: 576px;
+  --breakpoint-sm: 768px;
+  --breakpoint-md: 992px;
+  --breakpoint-lg: 1200px;
+  --breakpoint-xl: 1600px;
+}
+
+[data-theme="dark"] {
+  /* 紫色主题 - 暗色模式 */
+  --primary-color: #9254de;
+  --primary-hover: #b37feb;
+  --primary-active: #722ed1;
+  --bg-color: #141414;
+  --bg-secondary: #1f1f1f;
+  --bg-tertiary: #2a1a3a;
+  --text-color: #ffffffd9;
+  --text-secondary: #ffffff73;
+  --border-color: #434343;
+  --shadow: 0 2px 8px rgba(146, 84, 222, 0.25);
+  --gradient-bg: linear-gradient(135deg, #1f1f1f 0%, #2a1a3a 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background: var(--gradient-bg);
+  color: var(--text-color);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* 响应式工具类 */
+.mobile-only {
+  display: none;
+}
+
+.desktop-only {
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .mobile-only {
+    display: block;
+  }
+  
+  .desktop-only {
+    display: none;
+  }
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* 移动端优化 */
+@media (max-width: 767px) {
+  .ant-layout-sider {
+    position: fixed !important;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .ant-layout-sider.mobile-sider-open {
+    transform: translateX(0);
+  }
+  
+  .mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+  
+  .mobile-overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* 响应式表格 */
+@media (max-width: 767px) {
+  .responsive-table {
+    overflow-x: auto;
+  }
+  
+  .responsive-form .ant-form-item {
+    margin-bottom: 16px;
+  }
+  
+  .responsive-form .ant-form-item-label {
+    text-align: left;
+    padding-bottom: 4px;
+  }
+}
+
+/* 响应式间距 */
+.responsive-space {
+  padding: 16px;
+}
+
+@media (max-width: 767px) {
+  .responsive-space {
+    padding: 12px;
+  }
+}
+
+@media (max-width: 575px) {
+  .responsive-space {
+    padding: 8px;
+  }
+}
+
+/* 响应式字体 */
+@media (max-width: 767px) {
+  .ant-typography h1 {
+    font-size: 24px !important;
+  }
+
+  .ant-typography h2 {
+    font-size: 20px !important;
+  }
+
+  .ant-typography h3 {
+    font-size: 18px !important;
+  }
+
+  .ant-typography h4 {
+    font-size: 16px !important;
+  }
+
+  .ant-typography h5 {
+    font-size: 14px !important;
+  }
+}
+
+/* 紫色主题特殊样式 */
+.purple-gradient-card {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-hover) 100%);
+  color: white;
+  border: none;
+}
+
+.purple-glass-effect {
+  background: rgba(114, 46, 209, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(114, 46, 209, 0.2);
+}
+
+[data-theme="dark"] .purple-glass-effect {
+  background: rgba(146, 84, 222, 0.1);
+  border: 1px solid rgba(146, 84, 222, 0.2);
+}
+
+/* 自定义紫色滚动条 */
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-hover);
+}
+
+/* 紫色主题的卡片样式 */
+.theme-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.theme-card:hover {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
