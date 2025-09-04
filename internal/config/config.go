@@ -11,6 +11,7 @@ type Config struct {
     SSHHost      string
     SSHPort      int
     SSHUser      string
+    SSHPassword  string
     SSHKeyPath   string
     SZULoginPath string
     MonitorURLs  []string
@@ -34,6 +35,8 @@ func Load() *Config {
         _, _ = fmt.Sscanf(v, "%d", &p)
         if p > 0 { cfg.SSHPort = p }
     }
+    // optional password (if set, password auth overrides key auth)
+    cfg.SSHPassword = os.Getenv("NM_SSH_PASS")
     // default key path
     cfg.SSHKeyPath = getEnv("NM_SSH_KEY", "/root/.ssh/id_rsa")
     // monitor

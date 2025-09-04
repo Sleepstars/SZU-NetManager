@@ -24,6 +24,12 @@ func New(addr, user, keyPath string) (*Queue, error) {
     return &Queue{ addr: addr, conf: cfg }, nil
 }
 
+// NewWithPassword creates a queue using password authentication.
+func NewWithPassword(addr, user, password string) (*Queue, error) {
+    cfg := &ssh.ClientConfig{ User: user, Auth: []ssh.AuthMethod{ssh.Password(password)}, HostKeyCallback: ssh.InsecureIgnoreHostKey() }
+    return &Queue{ addr: addr, conf: cfg }, nil
+}
+
 // Exec runs a command synchronously with internal mutex to ensure serialization.
 func (q *Queue) Exec(cmd string) (string, error) {
     q.mu.Lock(); defer q.mu.Unlock()
@@ -40,4 +46,3 @@ func (q *Queue) Exec(cmd string) (string, error) {
     io.Copy(io.Discard, &stderr)
     return stdout.String(), nil
 }
-

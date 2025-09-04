@@ -39,11 +39,20 @@ func main() {
     go hub.Run()
 
     // Dependencies for API
-    q, err := sshqueue.New(
-        cfg.SSHHost+":"+fmt.Sprintf("%d", cfg.SSHPort),
-        cfg.SSHUser,
-        cfg.SSHKeyPath,
-    )
+    var q *sshqueue.Queue
+    if cfg.SSHPassword != "" {
+        q, err = sshqueue.NewWithPassword(
+            cfg.SSHHost+":"+fmt.Sprintf("%d", cfg.SSHPort),
+            cfg.SSHUser,
+            cfg.SSHPassword,
+        )
+    } else {
+        q, err = sshqueue.New(
+            cfg.SSHHost+":"+fmt.Sprintf("%d", cfg.SSHPort),
+            cfg.SSHUser,
+            cfg.SSHKeyPath,
+        )
+    }
     if err != nil { log.Fatalf("ssh queue: %v", err) }
     uciClient := uci.New(q)
     runner := &login.Runner{ BinaryPath: cfg.SZULoginPath }

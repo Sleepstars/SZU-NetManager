@@ -27,11 +27,12 @@ export GOPROXY=https://goproxy.cn,direct
 
 # 必要环境变量（按需修改）
 export NM_LISTEN=":8080"                   # 后端监听端口
-export NM_DB="szu-netmanager.db"          # SQLite 文件路径
+export NM_DB="szu-netmanager.db"          # SQLite 文件路径（自动初始化）
 export NM_SSH_HOST="192.168.1.1"          # 路由器地址
 export NM_SSH_PORT=22                      # 路由器 SSH 端口
 export NM_SSH_USER="root"                 # 路由器 SSH 用户
-export NM_SSH_KEY="$HOME/.ssh/id_rsa"     # 路由器 SSH 私钥
+export NM_SSH_KEY="$HOME/.ssh/id_rsa"     # 路由器 SSH 私钥（默认方式）
+export NM_SSH_PASS=""                      # 可选：设置后改用“密码登录”
 export NM_MONITOR_INTERVAL=30              # 故障检测间隔（秒）
 export NM_MONITOR_URLS="https://www.baidu.com,https://www.qq.com"
 
@@ -163,6 +164,7 @@ docker run --rm --network host \
   -e NM_SSH_HOST=192.168.1.1 \
   -e NM_SSH_USER=root \
   -e NM_SSH_KEY=/root/.ssh/id_rsa \
+  # 或使用密码登录：添加 -e NM_SSH_PASS=your-password
   -e NM_MONITOR_INTERVAL=30 \
   -e NM_MONITOR_URLS='https://www.baidu.com,https://www.qq.com' \
   szu-netmanager
@@ -170,6 +172,7 @@ docker run --rm --network host \
 
 - 访问 `http://<宿主机IP>:8080` 打开前端（容器内置静态资源 `NM_WEB_DIR=/app/web`）。
 - 容器内 `srun-login` 已放置到 `/usr/local/bin/srun-login`，后端自动使用。
+- 数据库 SQLite 驱动已内置（CGO-free），程序启动时自动创建并迁移表结构。
 
 ---
 

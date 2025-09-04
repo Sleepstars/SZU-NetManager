@@ -3,6 +3,8 @@ package db
 import (
     "database/sql"
     _ "github.com/ncruces/go-sqlite3/driver"
+    // Embed the SQLite WASM binary so the driver can load automatically.
+    _ "github.com/ncruces/go-sqlite3/embed"
 )
 
 func Open(path string) (*sql.DB, error) {
